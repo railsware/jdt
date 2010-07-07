@@ -9,9 +9,13 @@
 	table.books .book .name span { font-weight : bold; color : red; }
 	table.books .book .authors em { font-style : italic; color : green; }
 
+	.error-message { border : 2px solid red; color : red; }
+
 </style>
 
 <script>
+JDT.helper.DEBUG = true;
+
 var json_data = { 
 	'library' : {
 		'statistics' : { 'books-count':10, 'currently-reading':'madness.txt'},
@@ -27,34 +31,91 @@ var json_data = {
 	},
 }
 
+var array_data = [
+	{'key' : 'awake', 'value' : ['awoke','awoken']},
+	{'key' : 'be	was', 'value' : ['were', 'been']},
+	{'key' : 'bear', 'value' : ['bore', 'born']},
+	{'key' : 'beat', 'value' : ['beat', 'beat']},
+];
+
+// become	became	become
+// begin	began	begun
+
 $(function(){ JDT.process(json_data, document.body); });
+$(function(){ JDT.process(array_data, jQuery('.array_data_test')); });
+
+$(function(){ 
+	try {
+		JDT.process([1], jQuery('.error_test')); 
+		// test
+		should_equal('.error_test', false);
+	} catch (e) {
+		// error should apper here
+	}
+});
+
+
+$(function(){ 
+	JDT.process('{"key":"value"}', jQuery('.string_json_test')); 
+	// test
+	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );
+	
+});
+
+
+function should_equal(error_class, value1, value2) {
+	if ( value1 != value2 ) { jQuery(error_class).prepend('<div class="error-message">ERROR</div>'); };
+}
+
 </script>
 
 <div class="library">
 	
-<div class="statistics">
- I have <span class="books-count">0</span> books in my collection and i am currently reading : <span class="currently-reading">a book</span>
+	<div class="statistics">
+	 I have <span class="values">0</span> books in my collection and i am currently reading : <span class="currently-reading">a book</span>
+	</div>
+
+	<table class="books">
+	<tr class="listing-header">
+		<th>name</th>
+		<th>author</th>
+		<th>summary</th>
+		<th>genre</th>
+	</tr>
+	<tr class="book item">
+		<td class="name"><span class="value">My Book</span><span class="item">wtf</span></td>
+		<td class="authors"><em class="item">Vasil Pupkin</em><span class="delimiter"> !!!NIHUJASOBI!!! </span></td>
+		<td class="summary">It's a perfect book to fall asleep</td>
+		<td class="genre">Sleper</td>
+	</tr>
+	<tr class="book item">
+		<td class="name"><span class="value">His Book</span><span class="item">wtf</span></td>
+		<td class="authors"><em class="item">Diadia Bubkin</em><span class="delimiter">|||</span></td>
+		<td class="summary">It's the shittest book to fall asleep</td>
+		<td class="genre">Fucker</td>
+	</tr>
+	</table>
+
 </div>
 
-<table class="books">
-<tr class="listing-header">
-	<th>name</th>
-	<th>author</th>
-	<th>summary</th>
-	<th>genre</th>
-</tr>
-<tr class="book item">
-	<td class="name"><span class="value">My Book</span><span class="item">wtf</span></td>
-	<td class="authors"><em class="item">Vasil Pupkin</em><span class="delimiter"> !!!NIHUJASOBI!!! </span></td>
-	<td class="summary">It's a perfect book to fall asleep</td>
-	<td class="genre">Sleper</td>
-</tr>
-<tr class="book item">
-	<td class="name"><span class="value">His Book</span><span class="item">wtf</span></td>
-	<td class="authors"><em class="item">Diadia Bubkin</em><span class="delimiter">|||</span></td>
-	<td class="summary">It's the shittest book to fall asleep</td>
-	<td class="genre">Fucker</td>
-</tr>
-</table>
+<hr/>
 
+<div class="array_data_test">
+	<ul>
+		<li class="item"><span class="key">do</span>:<span class="values"><span class="item">do</span><span class="delimiter">,</span><span class="item">did</span><span class="delimiter">,</span><span class="item">done</span></span></li>
+		<li class="item"><span class="key">do</span>:<span class="values"><span class="item">do</span><span class="delimiter">,</span><span class="item">did</span><span class="delimiter">,</span><span class="item">done</span></span></li>
+	</ul>
+</div>
+
+<hr/>
+
+<div class="error_test">
+	<p class="list"></p>
+	<p class="list"></p>
+</div>
+
+<hr/>
+
+<div class="string_json_test">	
+	<p class="key">value-expectation</p>
 </div>
