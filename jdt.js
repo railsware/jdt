@@ -36,8 +36,13 @@ var JDT = {
 
 	process_value: function (value, parent) {
 		var value_object = this.find_closest_child(parent, this.VALUE_CLASS_MARKER);
-		var text_container = (value_object === undefined) ? parent : value_object;
-		this.helper.text(text_container, value);
+		var value_container = (value_object === undefined) ? parent : value_object;
+
+		// tags like <input .. have only value attribute, so use .val() on them
+		// others have children, so use .text()
+		var modification_function = value_container.tagName == 'INPUT' ? this.helper.val : this.helper.text;
+
+		modification_function(value_container, value);
 	},
 
 	process_array: function (array, parent) {
@@ -118,6 +123,7 @@ var JDT = {
 		remove   : function (object) { return jQuery(object).remove() },
 		clone    : function (object) { return jQuery(object).clone()[0] },
 		text     : function (object, arg) { return jQuery(object).text(arg) },
+		val      : function (object, arg) { return jQuery(object).val(arg) },
 		find     : function (object, arg) { return jQuery(object).find(arg) },
 		append   : function (object, arg) { return jQuery(object).append(arg) },
 		hasClass : function (object, arg) { return jQuery(object).hasClass(arg) },

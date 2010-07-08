@@ -147,3 +147,19 @@ function should_equal(error_class, expected, got) {
 	<li class="item"><a class="link" href="http://google-template.com"><span class="name">google-template</span></a></li>
 	</ul>
 </div>
+
+<script>
+$(function(){ 
+	CONTAINER=jQuery(".input_value_test");
+	data = {'color' : 'red', 'size' : 15 }
+	JDT.process(data, CONTAINER);
+	// test
+	should_equal(CONTAINER, data['color'], jQuery(CONTAINER).find('.color input.value').val());
+	should_equal(CONTAINER, data['size'], jQuery(CONTAINER).find('input.size').val());
+})
+	
+</script>
+<div class="input_value_test">	
+	<span class="color"><input class="value" type="text" value="blue-template" /></span>
+	<input class="size" type="text" value="10-template" />
+</div>
