@@ -25,7 +25,11 @@ var JDT = {
 		this.helper.log('process_map', data, parent);
 		for ( key in data ) {
 			var context = this.find_closest_child(parent, key);
-			if ( context !== undefined ) { this.process_element(data[key], context); };
+			if ( context !== undefined ) { 
+				this.process_element(data[key], context); 
+			} else if ( parent[key] !== undefined ) {
+				parent[key] = data[key];
+			}
 		}
 	},
 

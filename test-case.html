@@ -95,8 +95,7 @@ $(function(){
 $(function(){ 
 	JDT.process('{"key":"value"}', jQuery('.string_json_test')); 
 	// test
-	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );
-	
+	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );	
 });
 
 
@@ -107,4 +106,44 @@ function should_equal(error_class, value1, value2) {
 
 <div class="string_json_test">	
 	<p class="key">value-expectation</p>
+</div>
+
+
+
+
+<script>
+var links_data = [
+	{"link":{"href":"http://yahoo.com", 	"name":"yahoo"}},
+	{"link":{"href":"http://altavista.com", "name":"altavista"}},
+	{"link":{"href":"http://google.com", 	"name":"google"}},
+	{"link":{"href":"http://bing.com", 		"name":"bing"}}
+]	
+
+$(function(){ 
+	JDT.process(links_data, jQuery('.attributes_test')); 
+	// test
+	jQuery.each(links_data, function(index, link){
+		should_equal('.attributes_test', link["link"]["href"], jQuery('.attributes_test .link:eq('+index+')').attr("href") );
+		should_equal('.attributes_test', link["link"]["name"], jQuery('.attributes_test .link:eq('+index+') .name').text() );
+})
+	
+});
+
+
+function should_equal(error_class, expected, got) {
+	if ( expected != got ) { 
+		var error_message_container = jQuery(error_class).find('.error-message')
+		if ( error_message_container.length == 0 ) { error_message_container = jQuery(error_class).prepend('<div class="error-message"><pre></pre></div>'); }
+		
+		var error_log = jQuery(error_class).find('.error-message pre').append('ERROR: expected "'+expected+'", got "'+got+'\n');
+	};
+}
+</script>
+
+<div class="attributes_test">	
+	The search engines
+	<ul>
+	<li class="item"><a class="link" href="http://yahoo-template.com"><span class="name">yahoo-template</span></a></li>
+	<li class="item"><a class="link" href="http://google-template.com"><span class="name">google-template</span></a></li>
+	</ul>
 </div>
