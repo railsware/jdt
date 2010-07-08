@@ -15,7 +15,6 @@
 
 <script>
 JDT.helper.DEBUG = true;
-
 var json_data = { 
 	'library' : {
 		'statistics' : { 'books-count':10, 'currently-reading':'madness.txt'},
@@ -30,46 +29,10 @@ var json_data = {
 		'a-nema' : 'takogo'
 	},
 }
-
-var array_data = [
-	{'key' : 'awake', 'value' : ['awoke','awoken']},
-	{'key' : 'be	was', 'value' : ['were', 'been']},
-	{'key' : 'bear', 'value' : ['bore', 'born']},
-	{'key' : 'beat', 'value' : ['beat', 'beat']},
-];
-
-// become	became	become
-// begin	began	begun
-
-$(function(){ JDT.process(json_data, document.body); });
-$(function(){ JDT.process(array_data, jQuery('.array_data_test')); });
-
-$(function(){ 
-	try {
-		JDT.process([1], jQuery('.error_test')); 
-		// test
-		should_equal('.error_test', false);
-	} catch (e) {
-		// error should apper here
-	}
-});
-
-
-$(function(){ 
-	JDT.process('{"key":"value"}', jQuery('.string_json_test')); 
-	// test
-	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );
-	
-});
-
-
-function should_equal(error_class, value1, value2) {
-	if ( value1 != value2 ) { jQuery(error_class).prepend('<div class="error-message">ERROR</div>'); };
-}
-
+$(function(){ JDT.process(json_data); });
 </script>
 
-<div class="library">
+<div class="advanced_test library">
 	
 	<div class="statistics">
 	 I have <span class="values">0</span> books in my collection and i am currently reading : <span class="currently-reading">a book</span>
@@ -109,12 +72,38 @@ function should_equal(error_class, value1, value2) {
 
 <hr/>
 
+<script>
+$(function(){ 
+	try {
+		JDT.process([1], jQuery('.error_test')); 
+		// test
+		should_equal('.error_test', false);
+	} catch (e) {
+		// error should apper here
+	}
+});
+</script>
 <div class="error_test">
 	<p class="list"></p>
 	<p class="list"></p>
 </div>
 
 <hr/>
+
+
+<script>
+$(function(){ 
+	JDT.process('{"key":"value"}', jQuery('.string_json_test')); 
+	// test
+	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );
+	
+});
+
+
+function should_equal(error_class, value1, value2) {
+	if ( value1 != value2 ) { jQuery(error_class).prepend('<div class="error-message">ERROR</div>'); };
+}
+</script>
 
 <div class="string_json_test">	
 	<p class="key">value-expectation</p>
