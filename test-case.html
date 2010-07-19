@@ -10,6 +10,15 @@
 	table.books .book .authors em { font-style : italic; color : green; }
 
 	.error-message { border : 2px solid red; color : red; }
+	
+	.class_attribute_test .object { float: left; width: 150px; height: 150px; font-size: 20px; font-weight: bold; color: #fff; padding: 10px;  margin: 0 15px;}
+
+  .black { background-color: #000; }
+  .red { background-color: #fd0000; }
+  .green { background-color: #393; }
+  .blue { background-color: #3465cb; }
+  
+  h2 { margin: 30px 0;}
 
 </style>
 
@@ -31,6 +40,8 @@ var json_data = {
 }
 $(function(){ JDT.process(json_data); });
 </script>
+
+<h2>General test</h2>
 
 <div class="advanced_test library">
 	
@@ -61,17 +72,6 @@ $(function(){ JDT.process(json_data); });
 
 </div>
 
-<hr/>
-
-<div class="array_data_test">
-	<ul>
-		<li class="item"><span class="key">do</span>:<span class="values"><span class="item">do</span><span class="delimiter">,</span><span class="item">did</span><span class="delimiter">,</span><span class="item">done</span></span></li>
-		<li class="item"><span class="key">do</span>:<span class="values"><span class="item">do</span><span class="delimiter">,</span><span class="item">did</span><span class="delimiter">,</span><span class="item">done</span></span></li>
-	</ul>
-</div>
-
-<hr/>
-
 <script>
 $(function(){ 
 	try {
@@ -90,6 +90,7 @@ $(function(){
 
 <hr/>
 
+<h2>Simple key:value test</h2>
 
 <script>
 $(function(){ 
@@ -109,7 +110,7 @@ function should_equal(error_class, value1, value2) {
 </div>
 
 
-
+<hr/>
 
 <script>
 var links_data = [
@@ -141,13 +142,14 @@ function should_equal(error_class, expected, got) {
 </script>
 
 <div class="attributes_test">	
+  <h2>Attributes test</h2>
 	The search engines
 	<ul>
 	<li class="item"><a class="link" href="http://yahoo-template.com"><span class="name">yahoo-template</span></a></li>
 	<li class="item"><a class="link" href="http://google-template.com"><span class="name">google-template</span></a></li>
 	</ul>
 </div>
-
+<hr/>
 <script>
 $(function(){ 
 	CONTAINER=jQuery(".input_value_test");
@@ -160,6 +162,29 @@ $(function(){
 	
 </script>
 <div class="input_value_test">	
+  <h2>input value test</h2>
 	<span class="color"><input class="value" type="text" value="blue-template" /></span>
 	<input class="size" type="text" value="10-template" />
+</div>
+
+<script>
+var class_attribute_data = [
+	{"object":{"class":"red"}},
+	{"object":{"class":"green"}},
+	{"object":{"class":"blue"}},
+	{"object":{"class":"black"}}
+]	
+
+$(function(){ 
+	JDT.process(class_attribute_data, jQuery('.class_attribute_test')); 
+	
+});
+</script>
+
+<hr/>
+<div class="class_attribute_test">
+  <h2>"class" attribute test</h2>
+  <div class="item object">
+    JDT RULEZZZ!!!
+  </div>
 </div>

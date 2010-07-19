@@ -24,15 +24,26 @@ var JDT = {
 	process_map: function (data, parent) {
 		this.helper.log('process_map', data, parent);
 		for ( key in data ) {
-			var context = this.find_closest_child(parent, key);
-			if ( context !== undefined ) { 
-				this.process_element(data[key], context); 
-			} else if ( parent[key] !== undefined ) {
-				parent[key] = data[key];
-			}
+  		var context = this.find_closest_child(parent, key);
+  		if ( context !== undefined ) { 
+  			this.process_element(data[key], context);
+  		} else {
+  			this.process_attribute(key, data[key], parent);
+  		}
 		}
 	},
 
+  process_attribute: function (key, value, parent) {
+		if ( key == 'class' ) {
+		  // for class attribute in data, we do two things : 
+		  // - change the attribute name to className
+		  // - append value to class, as we use class to markup the data placeholders
+			parent['className'] += ' ' + value; 
+		} else if ( parent[key] !== undefined ) {
+      // replace the attribute with value
+			parent[key] = value;
+		}
+  },
 
 	process_value: function (value, parent) {
 		var value_object = this.find_closest_child(parent, this.VALUE_CLASS_MARKER);
