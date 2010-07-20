@@ -23,22 +23,28 @@
 </style>
 
 <script>
-JDT.helper.DEBUG = true;
+
+$(function(){
+
+JDT.helper.DEBUG = false;
+
 var json_data = { 
-	'library' : {
-		'statistics' : { 'books-count':10, 'currently-reading':'madness.txt'},
-		'books' : [
-			{'name' : 'Amber 1', 'authors' : ['Zheliazny', 'Plasmazny', 'Zemlianyj'], 'summary':'The Amber story - book 1', 'genre' : 'science-fiction'},
-			{'name' : 'Amber 2', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 2', 'genre' : 'science-fiction'},
-			{'name' : 'Amber 3', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 3', 'genre' : 'science-fiction'},
-			{'name' : 'Amber 4', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 4', 'genre' : 'science-fiction'},
-			{'name' : 'Amber 5', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 5', 'genre' : 'science-fiction'}
-		],
-		'shelfs' : [],
-		'a-nema' : 'takogo'
-	},
+ 'library' : {
+   'statistics' : { 'books-count':'10', 'currently-reading':'madness.txt'},
+   'books' : [
+     {'name' : 'Amber 1', 'authors' : ['Zheliazny', 'Plasmazny', 'Zemlianyj'], 'summary':'The Amber story - book 1', 'genre' : 'science-fiction'},
+     {'name' : 'Amber 2', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 2', 'genre' : 'science-fiction'},
+     {'name' : 'Amber 3', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 3', 'genre' : 'science-fiction'},
+     {'name' : 'Amber 4', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 4', 'genre' : 'science-fiction'},
+     {'name' : 'Amber 5', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 5', 'genre' : 'science-fiction'}
+   ],
+   'shelfs' : [],
+   'a-nema' : 'takogo'
+ }
 }
+
 $(function(){ JDT.process(json_data); });
+
 </script>
 
 <h2>General test</h2>
