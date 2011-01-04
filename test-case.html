@@ -81,17 +81,18 @@ $(function(){
 <script>
 $(function(){ 
 	try {
-		JDT.process([1], jQuery('.error_test')); 
+    JDT.process([1], jQuery('.error_test')); 
 		// test
-		should_equal('.error_test', false);
+		should_equal('.error_test', jQuery('.error_test .list .item').text(), 1);
 	} catch (e) {
 		// error should apper here
 	}
 });
 </script>
 <div class="error_test">
-	<p class="list"></p>
-	<p class="list"></p>
+	<div class="list">
+	  <p class="item">hello</p>
+	</div>
 </div>
 
 <hr/>
@@ -100,9 +101,10 @@ $(function(){
 
 <script>
 $(function(){ 
-	JDT.process('{"key":"value"}', jQuery('.string_json_test')); 
-	// test
-	should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );	
+  JDT.process('{"key":"value", "attr":"attrval"}', jQuery('.string_json_test')); 
+  // test
+  should_equal('.string_json_test', jQuery('.string_json_test .key').text(),  'value' );	
+  should_equal('.string_json_test', jQuery('.string_json_test').attr('attr'),  'attrval' );	
 });
 
 
@@ -111,8 +113,8 @@ function should_equal(error_class, value1, value2) {
 }
 </script>
 
-<div class="string_json_test">	
-	<p class="key">value-expectation</p>
+<div class="string_json_test" attr="none">
+	  <p class="key">value-expectation</p>
 </div>
 
 
