@@ -16,7 +16,7 @@ This hash will fill with data html markup similar to following:
     </div>
   </div>
 
-Notice that level of nesting doesn't matter: div.statistics might be two divs deeper into div.library and JDT will handle it.
+Notice that level of nesting doesn't matter: div.statistics might be any level deeper into div.library and JDT will handle it. Main point is that selectors structure must be respected.
 
 
 JDT processing can be launched with 
