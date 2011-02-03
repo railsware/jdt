@@ -20,13 +20,13 @@ Needs in JDT are quite simple: you have tool that can give you possibility to sh
 
 This hash will fill with data html markup similar to following:
 
-  <div class="advanced_test library">
-    <div class="statistics">
-      I have <span class="books-count">0</span> books in my collection and i am currently reading : <span class="currently-reading">a book</span>
+    <div class="advanced_test library">
+      <div class="statistics">
+        I have <span class="books-count">0</span> books in my collection and i am currently reading : <span class="currently-reading">a book</span>
+      </div>
     </div>
-  </div>
 
-Notice that *level of nesting doesn't matter*: div.statistics might be any level deeper into div.library and JDT will handle it. Main point is that selectors structure must be respected.
+Notice that *level of nesting doesn't matter*: `div.statistics` might be any level deeper into `div.library` and JDT will handle it. Main point is that selectors structure must be respected.
 
 
 JDT processing can be launched with 
@@ -47,8 +47,7 @@ JDT processing can be launched with
          {'name' : 'Amber 4', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 4', 'genre' : 'science-fiction'},
          {'name' : 'Amber 5', 'authors' : ['Zheliazny'], 'summary':'The Amber story - book 5', 'genre' : 'science-fiction'}
        ],
-       'shelfs' : [],
-       'a-nema' : 'takogo'
+       'there' : 'is-no-such'
      }
     }
     JDT.process(json_data);
@@ -73,10 +72,15 @@ JDT processing can be launched with
           <td class="genre">Sleeper</td>
         </tr>
         <tr class="book item">
-          <td class="name"><span class="value">His Book</span><span class="item">wtf</span></td>
-          <td class="authors"><em class="item">Diadia Bubkin</em><span class="delimiter">|</span></td>
-          <td class="summary">It's the best book to fall asleep</td>
-          <td class="genre">any</td>
+          <td class="name">
+            <span class="value"></span>
+          </td>
+          <td class="authors">
+            <em class="item"></em>
+            <span class="delimiter"></span>
+          </td>
+          <td class="summary"></td>
+          <td class="genre"></td>
         </tr>
       </table>
     </div>
