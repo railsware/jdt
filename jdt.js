@@ -11,7 +11,6 @@ var JDT = {
 		else if ( typeof data == "string" ) { data = this.helper.parseJSON( data ) } // if it's a string - parse as JSON
 		else if ( context.length != undefined ) { context = context[0]; }; // extract context as array to be the first element
 		
-
 		this.process_element(data, context);
 	},
 
@@ -43,11 +42,9 @@ var JDT = {
 	process_value: function (value, parent) {
 		var value_object = this.find_closest_child(parent, this.VALUE_CLASS_MARKER);
 		var value_container = (value_object === undefined) ? parent : value_object;
-
 		// tags like <input .. have only value attribute, so use .val() on them
 		// others have children, so use .text()
 		var modification_function = value_container.tagName == 'INPUT' ? this.helper.val : this.helper.text;
-
 		modification_function(value_container, value);
 	},
 
@@ -63,10 +60,8 @@ var JDT = {
 		var item_template = item_templates[0];
 		var item_parent = item_template.parentNode;
 		this.helper.remove(item_templates);
-
 		var delimiter = this.helper.find(item_parent, '>.'+this.DELIMITER_CLASS_MARKER);
 		delimiter.remove();	
-
 		for ( var index=0; index < array.length; index ++) {
 			var item = this.helper.clone(item_template);
 			this.process_element(array[index], item);
@@ -78,15 +73,11 @@ var JDT = {
 	find_closest_childen: function (parent, key) {
 		// if parent has the class itself, let's return it right away
 		if ( this.helper.hasClass(parent, key)) { return [parent]; };
-
 		var children = this.helper.find(parent, '.'+key);
-
 		// has one child ?
 		if (children.length <= 1) { return children; };
-	
 		// let's find only closest depth children is to the parent
 		var closest = [];
-
 		var iterated_parent_nodes = []; // storage
 		var length = children.length;
 		for ( var index=0; index < length; index++) {iterated_parent_nodes[index]=children[index];};
@@ -97,25 +88,19 @@ var JDT = {
 			for ( var index=0; index < length; index++) {
 				var current_parent_node = iterated_parent_nodes[index].parentNode;
 				this.helper.log(' key', key, 'parent', parent, 'current_parent_node', current_parent_node);
-
 				if ( current_parent_node == parent ) { closest[closest.length++] = children[index]; };
-			
 				// set next iteration of parent_node for element
 				iterated_parent_nodes[index] = current_parent_node;
 			}
-
 		}
-
 		return closest;
 	}, 
 	
 	find_closest_child: function (parent, key) {
 		var children = this.find_closest_childen(parent, key);
-
 		if ( children.length > 1 ) {
 			this.helper.error('you have more than one element for parent: ', parent, ' with class: ', key, '. Consider refactoring your HTML or JSON structure');
 		}
-
 		return children[0];
 	},
 	

@@ -72,7 +72,45 @@ HTML:
     </table>
   </div>
 
+---------
 
+You can also use inputs so their values will be changed properly.
+
+js:
+  container = jQuery(".input-test");
+  data = {'color' : 'red', 'size' : 15 }
+  JDT.process(data, container);
+
+
+html: 
+  <div class="input-test">	
+    <h2>input value test</h2>
+    <span class="color"><input class="value" type="text" value="blue-template" /></span>
+    <input class="size" type="text" value="10-template" />
+  </div>
+
+---------
+
+Or use JDT not only for text replacing. I.e. for assigning classes for elements.
+
+js:
+  class_attribute_data = [
+    {"object":{"class":"red"}},
+    {"object":{"class":"green"}},
+    {"object":{"class":"blue"}},
+    {"object":{"class":"black"}}
+  ]
+  
+  JDT.process(class_attribute_data, jQuery('.class-attribute-test')); 
+
+  <div class="class-attribute-test">
+    <h2>"class" attribute test</h2>
+    <div class="item object">
+      JDT
+    </div>
+  </div>
+  
+  
 ---------------------------------------------------------------------------------------
 
 JSON creation rules
