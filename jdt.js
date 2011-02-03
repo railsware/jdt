@@ -4,13 +4,12 @@ var JDT = {
 	DELIMITER_CLASS_MARKER 	: 'delimiter', 
 	VALUE_CLASS_MARKER 		: 'value', 
 
-	process : function(data, context) {
+	process : function(data, context, raw_html) {
 		if (!this.helper.dependencies_present()) { return; };
-		
+    if (raw_html) { this.process_raw_html(data, context); return; }
 		if ( context === undefined ) { context = document.body; } // no context - use top
 		else if ( typeof data == "string" ) { data = this.helper.parseJSON( data ) } // if it's a string - parse as JSON
 		else if ( context.length != undefined ) { context = context[0]; }; // extract context as array to be the first element
-		
 		this.process_element(data, context);
 	},
 
@@ -19,6 +18,15 @@ var JDT = {
 		else if ( value instanceof Object) { this.process_map(value, parent); }
 		else { this.process_value(value, parent); };
 	},
+
+  process_raw_html: function(data, parent) {
+    for ( key in data ) {
+  		var child = this.find_closest_child(parent, key);
+  		if ( child !== undefined ) { 
+        child.innerHTML = data[key]
+      }
+    }
+  },
 
 	process_map: function (data, parent) {
 		this.helper.log('process_map', data, parent);
@@ -52,7 +60,6 @@ var JDT = {
 		var list_object = this.find_closest_child(parent, this.LIST_CLASS_MARKER);
 		// list class is not defined. Use parent as list class
 		if ( list_object === undefined) { list_object = parent };
-
 		var item_templates = this.find_closest_childen(list_object, this.ITEM_CLASS_MARKER);
 		if ( item_templates.length < 1 ) {
 			this.helper.error("ERROR: object", parent, "doesn't contains an element with css class '"+this.ITEM_CLASS_MARKER+"'");
@@ -83,7 +90,6 @@ var JDT = {
 		for ( var index=0; index < length; index++) {iterated_parent_nodes[index]=children[index];};
 		
 		while ( closest.length == 0 ) {
-
 			// every iteration will go up 1 parentNode and search for children with parentNode == parent
 			for ( var index=0; index < length; index++) {
 				var current_parent_node = iterated_parent_nodes[index].parentNode;
@@ -106,8 +112,7 @@ var JDT = {
 	
 	helper: {
 		ERROR : true,
-		DEBUG : false,
-		
+		DEBUG : false,		
 		dependencies_present: function() { return jQuery !== undefined; },
 		parseJSON: jQuery.parseJSON,
 		each     : function (object, arg) { return jQuery.each(object, arg) }, 
@@ -118,7 +123,7 @@ var JDT = {
 		find     : function (object, arg) { return jQuery(object).find(arg) },
 		append   : function (object, arg) { return jQuery(object).append(arg) },
 		hasClass : function (object, arg) { return jQuery(object).hasClass(arg) },
-		out      : function (args) { (typeof console == 'object' && typeof console.log == 'function') ? console.log.apply(this, args) : alert(arguments[0]) },
+		out      : function (args) { (typeof console == 'object' && typeof console.log == 'function') ? console.log(this, args) : alert(arguments[0]) },
 		log      : function () { if (this.DEBUG) { this.out(arguments); } },
 		error    : function () { if (this.ERROR) { this.out(arguments); throw "stopping execution, check console.log" } }
 	}
