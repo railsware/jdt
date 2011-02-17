@@ -28,9 +28,17 @@ This hash will fill with data html markup similar to following:
 
 Notice that *level of nesting doesn't matter*: `div.statistics` might be any level deeper into `div.library` and JDT will handle it. Main point is that selectors structure must be respected.
 
-
 JDT processing can be launched with 
   `JDT.process(json_data);`
+
+So result of code listed above will look like:
+
+    <div class="advanced_test library">
+      <div class="statistics">
+        I have <span class="books-count">10</span> books in my collection and i am currently reading : <span class="currently-reading">madness.txt</span>
+      </div>
+    </div>
+
 
 
 ###More complicated example:
@@ -84,6 +92,71 @@ JDT processing can be launched with
         </tr>
       </table>
     </div>
+
+####Result
+    <div class="advanced_test library">
+      <div class="statistics">
+        I have <span class="books-count">10</span> books in my collection and i am currently reading : <span class="currently-reading">madness.txt</span>
+      </div>
+      <table class="books">
+        <tbody>
+          <tr class="listing-header">
+            <th>name</th>
+            <th>author</th>
+            <th>summary</th>
+            <th>genre</th>
+          </tr>
+          <tr class="book item">
+            <td class="name">
+              <span class="value">Amber 1</span>
+            </td>
+            <td class="authors">
+              <em class="item">Zheliazny</em>
+              <em class="item">Plasmazny</em>
+              <em class="item">Zemlianyj</em></td>
+            <td class="summary">The Amber story - book 1</td>
+            <td class="genre">science-fiction</td>
+          </tr>
+          <tr class="book item">
+            <td class="name">
+              <span class="value">Amber 2</span>
+            </td>
+            <td class="authors">
+              <em class="item">Zheliazny</em></td>
+            <td class="summary">The Amber story - book 2</td>
+            <td class="genre">science-fiction</td>
+          </tr>
+          <tr class="book item">
+            <td class="name">
+              <span class="value">Amber 3</span>
+            </td>
+            <td class="authors">
+              <em class="item">Zheliazny</em></td>
+            <td class="summary">The Amber story - book 3</td>
+            <td class="genre">science-fiction</td>
+          </tr>
+          <tr class="book item">
+            <td class="name">
+              <span class="value">Amber 4</span>
+            </td>
+            <td class="authors">
+              <em class="item">Zheliazny</em></td>
+            <td class="summary">The Amber story - book 4</td>
+            <td class="genre">science-fiction</td>
+          </tr>
+          <tr class="book item">
+            <td class="name">
+              <span class="value">Amber 5</span>
+            </td>
+            <td class="authors">
+              <em class="item">Zheliazny</em></td>
+            <td class="summary">The Amber story - book 5</td>
+            <td class="genre">science-fiction</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
 
 ##Usage variations
 
