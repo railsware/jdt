@@ -1,0 +1,180 @@
+<html>
+<head>
+
+<title>JDT Tests</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="jdt.js"></script>
+
+<style>
+  body { margin: 50px; }
+  h2 { margin: 100px 0 20px 0;}
+
+  .error-message { border : 2px solid red; color : red; padding: 10px; }
+
+  div.class-attribute-test .item { color: dimgray; padding: 5px; }
+
+  div.pretty th { background-color: azure; }
+  div.pretty span.currently-reading { font-weight: bold; }
+</style>
+
+<script>
+
+
+
+function should_equal(error_class, expected, got) {
+  if ( expected != got ) {
+    var error_message_container = $(error_class).find('.error-message')
+    if ( error_message_container.length == 0 ) { error_message_container = $(error_class).prepend('<div class="error-message"><pre></pre></div>'); }
+
+    var error_log = $(error_class).find('.error-message pre').append('ERROR: expected "'+expected+'", got "'+got+'\n');
+  };
+}
+
+
+var data, container; // we'll be using these vars as a container for each test's data
+
+$(function () {
+
+  // General
+  $('div.library').jdt({
+    stats: { 'book-count': '4', 'currently-reading': 'The Plantation' },
+    books: [
+      { name: 'Tell No One',
+        author: 'Harlan Coben',
+        categories: [],
+        genres: [ 'Thriller', 'Mystery' ] },
+      { name: 'The Plantation',
+        author: 'Chris Kuzneski',
+        genres: [],
+        categories: [ 'Kidnapping' ] },
+      { name: 'Water for Elephants',
+        author: 'Sara Gruen',
+        genres: [ 'Romance' ],
+        categories: [ 'Trains' ] },
+      { name: 'Eye of the Needle',
+        author: 'Ken Follett',
+        genres: [ 'Thriller' ],
+        categories: [ 'Murder', 'Countryside' ] }
+    ],
+    shelves: [ 'no', 'containers', 'for', 'shelves', 'specified' ],
+    no: 'such too',
+    _class: "pretty"
+  });
+
+  // Passing Data as String
+  $('div.company').jdt("Railsware");
+
+
+  // Passing Data as JSON String
+  $('div.competition').jdt('{ "company": "Google" }');
+
+
+  // Passing Data as Array
+  data = [
+    { link: { _href: "http://yahoo.com", 	    name: "Yahoo" } },
+    { link: { href: "http://altavista.com",  name: "Altavista" } },
+    { link: { _href: "http://google.com", 	  name: "Google" } },
+    { link: { _href: "http://bing.com", 		  name: "Bing" } }
+  ];
+  container = $('.attributes-test').jdt(data);
+  $.each(data, function(i, link){
+	  should_equal(container, link.link.href, $('.attributes_test .link:eq('+i+')').attr("href") );
+	  should_equal(container, link.link.name, $('.attributes_test .link:eq('+i+') .name').text() );
+  });
+
+
+  // Working With Inputs
+  data = { one: 'One', another: 2 }
+  container = $(".input-test").jdt(data);
+  should_equal(container, data.color, container.find('.color input.value').val());
+  should_equal(container, data.size, container.find('input.size').val());
+
+
+  // Bare attribute test
+  data = [
+    { object: { _style: "background-color: red;" } },
+    { object: { _style: "background-color: orange;" } },
+    { object: { _style: "background-color: yellow;" } },
+    { object: { _style: "background-color: green;" } },
+    { object: { _style: "background-color: skyblue;" } },
+    { object: { _style: "background-color: darkblue;" } },
+    { object: { _style: "background-color: violet;" } }
+  ]
+  $('.class-attribute-test').jdt(data);
+
+});
+
+</script>
+</head>
+
+<body>
+
+<h1>JDT Tests</h1>
+
+<h2>General</h2>
+<div class="library">
+  <p class="stats">
+   I have <span class="book-count">0</span> books in my collection and
+   I am currently reading "<span class="currently-reading">none</span>":
+  </p>
+  <table class="books" cellspacing="3" cellpadding="3" border="1">
+    <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Genres</th>
+      <th>Categories</th>
+    </tr>
+    <tr class="item">
+      <td class="name">
+        <a class="value"></a>
+      </td>
+      <td class="author">
+        fallback value
+      </td>
+      <td class="genres">
+        <span class="item"></span>
+        <span class="delimiter">, </span>
+      </td>
+      <td class="categories">
+        <span class="item"></span>
+        <span class="delimiter">, </span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2>Passing Data as String</h2>
+<div class="company"></div>
+
+<h2>Passing Data as JSON String</h2>
+<div class="competition">
+  <span class="company"></span>
+</div>
+
+
+
+<h2>Passing Data as Array</h2>
+<div class="attributes-test">
+	The search engines:
+	<ul>
+  	<li class="item"><a class="link" href="http://yahoo-template.com"><span class="name">yahoo-template</span></a></li>
+	  <li class="item"><a class="link" href="http://google-template.com"><span class="name">google-template</span></a></li>
+	</ul>
+</div>
+
+
+<h2>Working With Inputs</h2>
+<div class="input-test">
+	<span class="one"><input class="value" type="text" value="fallback value" /></span>
+	<input class="another" type="text" value="fallback value" />
+</div>
+
+
+<h2>Bare attribute test</h2>
+<div class="class-attribute-test">
+  <div class="item object">JDT</div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<html>
+<head>
+
+<title>JDT Tests</title>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<script src="jdt.js"></script>
+
+<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+
+<style>
+  body { margin: 50px; }
+
+  #qunit { margin-bottom: 300px; }
+  #playground { display: none; }
+  #stages { display: none; }
+
+  div.class-attribute-test .item { color: dimgray; padding: 5px; }
+
+  div.pretty th { background-color: azure; }
+  div.pretty span.currently-reading { font-weight: bold; }
+</style>
+
+<script>
+
+
+
+$(function () {
+
+  var qunit = $('#qunit');
+  var playground = $('#playground');
+  var stages = $('#stages');
+
+  function stage(selector) { playground.empty().append( stages.find(selector).first().clone() ); }
+
+
+  module("Strings");
+
+  test("pass simple string", function() { stage('.company');
+    playground.find('.company').jdt('Railsware');
+    equals( playground.find('.company').html(), 'Railsware', "simple strings should become the contents of target DOM element");
+  });
+
+  test("pass invalid json string", function() { stage('.rw-competition');
+    var jsonString = '{ company: "Google" }';
+    playground.find('.rw-competition').jdt(jsonString);
+    equals( playground.find('.rw-competition').html(), jsonString, "invalid json strings should be treated as common strings" );
+  });
+
+  test("pass valid json string", function() { stage('.rw-competition');
+    var jsonString = '{ "company": "Google" }';
+    playground.find('.rw-competition').jdt(jsonString);
+    equals( playground.find('.rw-competition .company').html(), "Google", "valid json strings should be parsed into objects" );
+  });
+
+
+
+  module("Arrays");
+
+  test("pass array of values to [div.container |span.item]", function() { stage('.alphabet');
+    expect(2);
+    var array = [ "a", "b", "c", "d", "e"];
+    playground.find('.alphabet').jdt(array);
+    equals( playground.find('.alphabet span.item').length, array.length);
+    deepEqual( array, $.map( playground.find('.alphabet span.item'), function (jQ) { return $(jQ).html(); }) );
+  });
+
+  test("pass array of values to [div.container |p.item ||span.value]", function() { stage('.cities');
+    expect(2);
+    var array = [ "Kiev", "Odessa", "Kharkiv", "Dnipropetrovsk", "Lviv"];
+    playground.find('.cities').jdt(array);
+    equals( playground.find('.cities span.value').length, array.length);
+    deepEqual( array, $.map( playground.find('.cities span.value'), function (jQ) { return $(jQ).html(); }) );
+  });
+
+});
+
+</script>
+</head>
+
+<body>
+
+<div id="qunit">
+  <h1 id="qunit-header">QUnit example</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">test markup, will be hidden</div>
+</div>
+
+
+<div id="playground" />
+
+<div id="stages">
+
+  <div class="company"></div>
+
+  <div class="rw-competition">
+    <span class="company"></span>
+  </div>
+
+  <div class="alphabet">
+    <span class="item"></span>
+  </div>
+
+  <div class="cities">
+    <p class="item">
+      <span class="value"></span> is one of five biggest cities of Ukraine.
+    </p>
+  </div>
+
+</div><!-- stages -->
+
+
+</body>
+</html>
