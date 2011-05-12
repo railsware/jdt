@@ -12,7 +12,7 @@
 <style>
   body { margin: 50px; }
 
-  #qunit { margin-bottom: 300px; }
+  #qunit { margin-bottom: 50px; }
   #playground { display: none; }
   #stages { display: none; }
 
@@ -33,6 +33,7 @@ $(function () {
   var stages = $('#stages');
 
   function stage(selector) { playground.empty().append( stages.find(selector).first().clone() ); }
+  jQuery.fn.stripTags = function() { return this.replaceWith( this.html().replace(/<\/?[^>]+>/gi, '') ); };
 
 
   module("Strings");
@@ -54,8 +55,6 @@ $(function () {
     equals( playground.find('.rw-competition .company').html(), "Google", "valid json strings should be parsed into objects" );
   });
 
-
-
   module("Arrays");
 
   test("pass array of values to [div.container |span.item]", function() { stage('.alphabet');
@@ -68,11 +67,66 @@ $(function () {
 
   test("pass array of values to [div.container |p.item ||span.value]", function() { stage('.cities');
     expect(2);
-    var array = [ "Kiev", "Odessa", "Kharkiv", "Dnipropetrovsk", "Lviv"];
+    var array = [ "Kyiv", "Odessa", "Kharkiv", "Dnipropetrovsk", "Lviv"];
     playground.find('.cities').jdt(array);
     equals( playground.find('.cities span.value').length, array.length);
     deepEqual( array, $.map( playground.find('.cities span.value'), function (jQ) { return $(jQ).html(); }) );
   });
+
+
+  test("pass array of values to [div.container |p.item ||span.value ||span.delimiter]", function() { stage('.cities');
+    expect(2);
+    var array = [ "Kyiv", "Odessa", "Kharkiv", "Dnipropetrovsk", "Lviv"];
+    playground.find('.cities').jdt(array);
+    equals( playground.find('.cities span.value').length, array.length);
+    deepEqual( array, $.map( playground.find('.cities span.value'), function (jQ) { return $(jQ).html(); }) );
+  });
+
+
+
+  module("Objects");
+
+  test("pass simplest object", function() { stage('.important-note');
+    var anyoneShouldKnow = { 'dream-city': 'Lutsk' };
+    playground.find('.important-note').jdt(anyoneShouldKnow);
+    equal( playground.find('.important-note span').html(), anyoneShouldKnow['dream-city']);
+  });
+
+  test("pass object with attributes starting with underscore", function() { stage('.railsware');
+    expect(2);
+    var rwData = { _href: 'http://railsware.com', _html: 'Railsware' };
+    playground.find('.railsware').jdt(rwData);
+    equal( playground.find('.railsware').attr('href'), rwData._href );
+    equal( playground.find('.railsware').text(), rwData._html );
+  });
+
+
+
+  module("Complex");
+
+  test("pass object with objects, arrays and values", function() { stage('.rw-products');
+    var data = {
+      company: {
+        _html: 'Railsware',
+        _href: 'http://railsware.com'
+      },
+      number: 4,
+      products: [
+        { _html: 'Peroozal', _href: 'http://peroozal.com' },
+        { _html: 'Playhem', _href: 'http://playhem.com' },
+        { _html: 'Startwire', _href: 'http://startwire.com' },
+        { _html: 'Ratepoint', _href: 'http://ratepoint.com' }
+      ]
+    };
+    playground.find('.rw-products').jdt(data);
+    equal( playground.find('.rw-products .number').html(), data.number );
+    equal( playground.find('.rw-products .delimiter').length, data.products.length - 1 );
+    deepEqual( $.map( playground.find('.rw-products a.product'), function (jQ) { return $(jQ).html(); }),
+               $.map( data.products, function (p) { return p._html; }) );
+  });
+
+
+//playground.show();
 
 });
 
@@ -82,7 +136,7 @@ $(function () {
 <body>
 
 <div id="qunit">
-  <h1 id="qunit-header">QUnit example</h1>
+  <h1 id="qunit-header">JDT Tests</h1>
   <h2 id="qunit-banner"></h2>
   <div id="qunit-testrunner-toolbar"></div>
   <h2 id="qunit-userAgent"></h2>
@@ -109,6 +163,18 @@ $(function () {
     <p class="item">
       <span class="value"></span> is one of five biggest cities of Ukraine.
     </p>
+  </div>
+
+  <div class="important-note">
+    <span class="dream-city"></span> is the prettiest city of Ukraine.
+  </div>
+
+  <a class="railsware"></a>
+
+  <div class="rw-products">
+    <span class="products list">These are the <span class="number">billion</span> products of <a class="company"></a>:
+      <a class="item product"></a><span class="delimiter">, </span>
+    </span>.
   </div>
 
 </div><!-- stages -->
